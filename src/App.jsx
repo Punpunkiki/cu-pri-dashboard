@@ -95,7 +95,7 @@ const CSS = `
 .pri-kpi-l{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:7px}
 .pri-kpi-v{font-family:var(--mono);font-size:25px;font-weight:600;letter-spacing:-.5px}
 .pri-kpi-s{font-size:10.5px;color:var(--faint);font-family:var(--mono)}
-.pri-kpi-d{position:absolute;top:12px;right:14px;font-size:10.5px;font-family:var(--mono);
+.pri-kpi-d{margin-top:auto;padding-top:4px;font-size:10.5px;font-family:var(--mono);
   display:flex;align-items:center;gap:3px}
 
 /* ---------- dashboard columns ---------- */
