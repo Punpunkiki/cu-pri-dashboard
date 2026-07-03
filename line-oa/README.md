@@ -52,13 +52,34 @@ Zone A (Dashboard), E (Help→handoff view), and F (Contact→oaMessage) work wi
 - [x] **Flex JSON** — 3 cards wired to the real Vercel URL (this folder)
 - [x] **Rich-menu tap-area JSON** — wired to Vercel URL + real OA id (this folder)
 
+- [x] **Keyword auto-replies (rich cards)** — 4 rich-message cards wired + active; Default catch-all off
+- [x] **Webhook backend deployed** — Vercel Edge Function `api/webhook.js` (see below)
+
 ## ⏳ Pending (needs you / backend)
 - [ ] **Profile picture + cover image** — upload `cupri_profile_640.png` + `cupri_cover_1080x878.png` in OA Manager → Edit profile
-- [ ] **Rich menu published** — create in OA Manager, upload `cupri_richmenu_2500x1686.png`, set 6 tap zones (see `richmenu.json`), set as default
-- [ ] **Webhook URL** — set in Messaging API settings once the backend endpoint exists; enable "Use webhook"
+- [ ] **Webhook env vars + activation** — add the two secrets in Vercel, then set/enable the URL in the console (see below)
 - [ ] **Flex preview** — paste any `flex_*.json` into the LINE Flex Message Simulator (developers.line.biz/flex-simulator) to verify rendering
-- [ ] **Backend push service** — implement userId capture + push using the access token
+- [ ] **Backend push service** — implement userId capture + push using the access token (needs a datastore)
 - [ ] **OA verification review** (optional) — submit for a verified/premium badge if desired
+
+---
+
+# Backend — webhook
+
+**Endpoint:** `https://cu-pri-dashboard.vercel.app/api/webhook` (Vercel Edge Function, `api/webhook.js`)
+
+Handles rich-menu **postback** taps (`menu=alerts|weekly|status`, `action=enroute`) and
+**follow** events, replying with branded Flex cards. Plain-text keywords are deliberately
+ignored so the OA keyword auto-replies (rich-message cards) remain the single source of truth
+(no double replies). Requests are verified with HMAC-SHA256 (`x-line-signature`).
+
+**Required environment variables** (Vercel → Project → Settings → Environment Variables → all envs, then redeploy):
+- `LINE_CHANNEL_SECRET` — Messaging API channel secret
+- `LINE_CHANNEL_ACCESS_TOKEN` — long-lived channel access token
+
+**Activate:** LINE Developers Console → channel `2010585249` → Messaging API →
+Webhook URL = the endpoint above → **Use webhook: ON** → **Verify** (expects 200).
+Also enable Webhook in OA Manager → Settings → response settings.
 
 ## Flags
 - Postback zones B/C/D are inert until the webhook backend is live (see note above).
