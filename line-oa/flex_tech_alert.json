@@ -1,0 +1,50 @@
+{
+  "type": "flex",
+  "altText": "⚠️ แจ้งเตือนความเสี่ยงสูง: CH-MED-01 คณะแพทยศาสตร์ — Suction ↓ / Superheat +4.2°C / ก๊าซ 20 ppm",
+  "contents": {
+    "type": "bubble",
+    "size": "mega",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#B45309",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "text", "text": "⚠️ แจ้งเตือนความเสี่ยงสูง", "color": "#FFFFFF", "weight": "bold", "size": "lg" },
+        { "type": "text", "text": "Anomaly Predictive · Leak Confidence 92%", "color": "#FDE8C8", "size": "xs", "margin": "sm" }
+      ]
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "md",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "อาคาร", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "คณะแพทยศาสตร์ · ห้องเครื่องชั้น B1", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "เครื่อง", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "Chiller CH-MED-01 (R-410A)", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "อาการ", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "แรงดันด้านดูดตกต่ำกว่าเส้นฐาน −14% และ Superheat +4.2 °C ต่อเนื่อง 18 ชม.", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "ก๊าซในห้องเครื่อง", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "20 ppm (เกณฑ์เฝ้าระวัง 10–50 ppm)", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "ตำแหน่งคาดการณ์", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "ท่อทางดูด (Suction Line) ใกล้วาล์วบริการ", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "separator", "margin": "md" },
+        { "type": "text", "text": "กรุณาเข้าตรวจสอบภายใน 2 ชั่วโมง — Energy Penalty ประมาณ ฿6,850/วัน หากไม่แก้ไข", "size": "xs", "color": "#8A8A93", "wrap": true, "margin": "md" }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "button", "style": "primary", "color": "#141318", "height": "sm", "action": { "type": "postback", "label": "รับเรื่อง / เปิด Work Order", "data": "action=ack&wo=create&asset=CH-MED-01" } },
+        { "type": "button", "style": "secondary", "height": "sm", "action": { "type": "uri", "label": "เปิด Drill-down", "uri": "https://cu-pri-dashboard.vercel.app/?asset=CH-MED-01" } }
+      ]
+    }
+  },
+  "quickReply": {
+    "items": [
+      { "type": "action", "action": { "type": "postback", "label": "รับเรื่อง", "data": "action=ack&asset=CH-MED-01", "displayText": "รับเรื่อง CH-MED-01" } },
+      { "type": "action", "action": { "type": "postback", "label": "เปิด Work Order", "data": "action=wo&asset=CH-MED-01", "displayText": "เปิด Work Order" } },
+      { "type": "action", "action": { "type": "uri", "label": "ดูแดชบอร์ด", "uri": "https://cu-pri-dashboard.vercel.app/" } }
+    ]
+  }
+}

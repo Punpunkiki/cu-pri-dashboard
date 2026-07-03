@@ -1,0 +1,47 @@
+{
+  "type": "flex",
+  "altText": "🔴 ยืนยันการรั่วไหล (Critical): CH-MED-01 — NDIR 36 ppm · เข้าพื้นที่ทันที",
+  "contents": {
+    "type": "bubble",
+    "size": "mega",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#DC2626",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "text", "text": "🔴 ยกระดับเป็นวิกฤต (Critical Leak)", "color": "#FFFFFF", "weight": "bold", "size": "lg", "wrap": true },
+        { "type": "text", "text": "Cross-validated โดยเซนเซอร์ NDIR · 28 มิ.ย. 2569 14:07", "color": "#FBD5D5", "size": "xs", "margin": "sm" }
+      ]
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "md",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "สถานะ", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "เปลี่ยนจาก 🟡 เฝ้าระวัง → 🔴 วิกฤต", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "NDIR ห้องเครื่อง", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "36 ppm (เกินเกณฑ์เฝ้าระวัง 10–50 ppm)", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "อัตรารั่วประมาณ", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "0.42 kg/วัน ≈ 0.88 tCO2e/วัน (R-410A, GWP 2,088)", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "box", "layout": "baseline", "spacing": "sm", "contents": [ { "type": "text", "text": "สถานที่", "color": "#8A8A93", "size": "sm", "flex": 3 }, { "type": "text", "text": "คณะแพทยศาสตร์ · ห้องเครื่องชั้น B1 · CH-MED-01", "color": "#1F1F26", "size": "sm", "flex": 7, "wrap": true } ] },
+        { "type": "separator", "margin": "md" },
+        { "type": "text", "text": "⚠️ ความปลอดภัย: ระบายอากาศห้องเครื่องก่อนเข้าพื้นที่ และเตรียมอุปกรณ์ตรวจรอยรั่ว", "size": "xs", "color": "#B91C1C", "wrap": true, "margin": "md" }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "button", "style": "primary", "color": "#DC2626", "height": "sm", "action": { "type": "uri", "label": "โทรแจ้งหัวหน้าช่าง", "uri": "tel:+6622183000" } },
+        { "type": "button", "style": "secondary", "height": "sm", "action": { "type": "uri", "label": "นำทางไปห้องเครื่อง", "uri": "https://maps.google.com/?q=13.7387,100.5306" } }
+      ]
+    }
+  },
+  "quickReply": {
+    "items": [
+      { "type": "action", "action": { "type": "postback", "label": "รับทราบ · กำลังเข้าพื้นที่", "data": "action=enroute&asset=CH-MED-01", "displayText": "รับทราบ กำลังเข้าพื้นที่" } }
+    ]
+  }
+}

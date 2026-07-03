@@ -1,0 +1,40 @@
+{
+  "type": "flex",
+  "altText": "📊 สรุปผู้บริหารรายสัปดาห์ 23–29 มิ.ย. 2569: COP +8.2% · ประหยัด ฿186,400 · ป้องกัน 42.8 tCO2e",
+  "contents": {
+    "type": "bubble",
+    "size": "mega",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#E8578D",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "text", "text": "📊 สรุปผู้บริหารรายสัปดาห์", "color": "#FFFFFF", "weight": "bold", "size": "lg" },
+        { "type": "text", "text": "23–29 มิ.ย. 2569 · อาคารนำร่อง 8 เครื่อง · CU-PRI", "color": "#FBDCE9", "size": "xs", "margin": "sm" }
+      ]
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "box", "layout": "baseline", "contents": [ { "type": "text", "text": "ประสิทธิภาพ COP เฉลี่ย", "size": "sm", "color": "#8A8A93", "flex": 6 }, { "type": "text", "text": "+8.2%", "size": "sm", "weight": "bold", "color": "#1B9E77", "flex": 3, "align": "end" } ] },
+        { "type": "box", "layout": "baseline", "contents": [ { "type": "text", "text": "ชั่วโมงฉุกเฉินที่หลีกเลี่ยงได้", "size": "sm", "color": "#8A8A93", "flex": 6 }, { "type": "text", "text": "14 ชม.", "size": "sm", "weight": "bold", "color": "#1F1F26", "flex": 3, "align": "end" } ] },
+        { "type": "box", "layout": "baseline", "contents": [ { "type": "text", "text": "ประหยัดค่าไฟ + ค่าซ่อม", "size": "sm", "color": "#8A8A93", "flex": 6 }, { "type": "text", "text": "฿186,400", "size": "sm", "weight": "bold", "color": "#1F1F26", "flex": 3, "align": "end" } ] },
+        { "type": "box", "layout": "baseline", "contents": [ { "type": "text", "text": "ป้องกันการปล่อย (เดือนนี้)", "size": "sm", "color": "#8A8A93", "flex": 6 }, { "type": "text", "text": "42.8 tCO2e", "size": "sm", "weight": "bold", "color": "#1B9E77", "flex": 3, "align": "end" } ] },
+        { "type": "separator", "margin": "md" },
+        { "type": "text", "text": "สถานะ: 🟢 ปกติ 6 · 🟡 เฝ้าระวัง 1 · 🔴 วิกฤต 1 (กำลังซ่อม, ตอบสนองภายใน 1.5 ชม.)", "size": "xs", "color": "#8A8A93", "wrap": true, "margin": "md" }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "paddingAll": "16px",
+      "contents": [
+        { "type": "button", "style": "primary", "color": "#E8578D", "height": "sm", "action": { "type": "uri", "label": "เปิดแดชบอร์ดผู้บริหาร", "uri": "https://cu-pri-dashboard.vercel.app/?view=executive" } }
+      ]
+    }
+  }
+}

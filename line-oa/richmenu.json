@@ -1,0 +1,14 @@
+{
+  "size": { "width": 2500, "height": 1686 },
+  "selected": true,
+  "name": "CU-PRI Main Menu v1",
+  "chatBarText": "เมนู CU-PRI",
+  "areas": [
+    { "bounds": { "x": 0, "y": 0, "width": 834, "height": 843 }, "action": { "type": "uri", "label": "แดชบอร์ด", "uri": "https://cu-pri-dashboard.vercel.app/?view=dashboard" } },
+    { "bounds": { "x": 834, "y": 0, "width": 833, "height": 843 }, "action": { "type": "postback", "label": "การแจ้งเตือน", "data": "menu=alerts", "displayText": "ดูการแจ้งเตือนล่าสุด" } },
+    { "bounds": { "x": 1667, "y": 0, "width": 833, "height": 843 }, "action": { "type": "postback", "label": "รายงานสรุป", "data": "menu=weekly", "displayText": "ขอรายงานสรุปรายสัปดาห์" } },
+    { "bounds": { "x": 0, "y": 843, "width": 834, "height": 843 }, "action": { "type": "postback", "label": "สถานะอาคาร", "data": "menu=status", "displayText": "ดูสถานะอาคารทั้งหมด" } },
+    { "bounds": { "x": 834, "y": 843, "width": 833, "height": 843 }, "action": { "type": "uri", "label": "คู่มือ", "uri": "https://cu-pri-dashboard.vercel.app/?view=handoff" } },
+    { "bounds": { "x": 1667, "y": 843, "width": 833, "height": 843 }, "action": { "type": "uri", "label": "ติดต่อทีม", "uri": "https://line.me/R/oaMessage/%40686hxlrb/?ติดต่อทีม" } }
+  ]
+}
