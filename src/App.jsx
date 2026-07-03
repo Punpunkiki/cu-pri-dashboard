@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Activity, AlertOctagon, AlertTriangle, ArrowUpRight,
   BadgeCheck, Bell, Building2, Check, CheckCircle2, ChevronRight, ClipboardCheck,
   Clock, Copy, Database, FileDown, Filter, Gauge, LayoutDashboard, Leaf,
   MessageSquare, Package, Phone, RefreshCw, Search, Send, ShieldCheck, Snowflake,
-  Thermometer, TrendingUp, Users, Wifi, Wrench, Zap, Info, ExternalLink
+  Thermometer, TrendingUp, Users, Wifi, Wrench, Zap, Info, ExternalLink, Sun, Moon
 } from "lucide-react";
 import {
   ResponsiveContainer, ComposedChart, AreaChart, Area, Line, XAxis, YAxis,
@@ -321,6 +321,34 @@ button.pri-zone:hover .zic{transform:scale(1.07)}
   .pri-main{padding:16px 14px 60px}
   .pri-list{max-height:none}
 }
+
+/* ---------- theme toggle button ---------- */
+.pri-th{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--mut);cursor:pointer}
+.pri-th:hover{color:var(--txt);border-color:var(--pink)}
+
+/* ---------- LIGHT THEME ---------- */
+.pri-root.light{
+  --bg:#F3F4F8; --panel:#FFFFFF; --panel2:#F1F2F6; --line:rgba(20,19,32,.11);
+  --txt:#1A1A22; --mut:#5C5768; --faint:#8B8695;
+}
+.pri-root.light .pri-side{background:#FAFAFC}
+.pri-root.light .pri-nav:hover{background:rgba(20,19,32,.05)}
+.pri-root.light .pri-nav.on{background:linear-gradient(90deg,rgba(232,87,141,.12),rgba(232,87,141,.02))}
+.pri-root.light .pri-btn:hover{border-color:rgba(20,19,32,.22)}
+.pri-root.light .pri-tile:hover{border-color:rgba(20,19,32,.22)}
+.pri-root.light .pri-copy:hover{border-color:rgba(20,19,32,.25)}
+.pri-root.light .pri-list{scrollbar-color:#C7C7D2 transparent}
+.pri-root.light .pri-list::-webkit-scrollbar-thumb{background:#C9C9D3}
+.pri-root.light .pri-tip{background:#FFFFFF;box-shadow:0 12px 30px rgba(20,19,32,.15)}
+.pri-root.light .pri-toast{background:#FFFFFF;box-shadow:0 16px 40px rgba(20,19,32,.18)}
+.pri-root.light .pri-table td{border-bottom-color:rgba(20,19,32,.08)}
+.pri-root.light .pri-syncpill{color:#0C8A62;border-color:rgba(47,159,120,.4);background:rgba(47,191,143,.13)}
+.pri-root.light .st-ok{color:#0C8A62}
+.pri-root.light .st-warn{color:#946200}
+.pri-root.light .st-crit{color:#C62B21}
+.pri-root.light .pri-fbtn.on{color:var(--pink-deep)}
+.pri-root.light .pri-step.done .n{color:var(--pink-deep)}
 `;
 
 /* ================================================================ DATA */
@@ -714,7 +742,7 @@ const Donut = ({ value, color }) => {
   return (
     <div style={{ position: "relative", width: size, height: size, flex: "none" }}>
       <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="rgba(255,255,255,.08)" strokeWidth="8" fill="none" />
+        <circle cx={size / 2} cy={size / 2} r={r} stroke="rgba(140,140,155,.22)" strokeWidth="8" fill="none" />
         {value != null && (
           <circle cx={size / 2} cy={size / 2} r={r} stroke={color} strokeWidth="8" fill="none"
             strokeLinecap="round" strokeDasharray={`${(c * value) / 100} ${c}`}
@@ -773,12 +801,12 @@ function FailureSignatureChart({ data, status }) {
       <div style={{ height: 280 }}>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: -14 }}>
-            <CartesianGrid stroke="rgba(255,255,255,.05)" vertical={false} />
+            <CartesianGrid stroke="rgba(140,140,155,.18)" vertical={false} />
             <XAxis dataKey="x" type="number" domain={[0, 14]} ticks={xTicks} tickFormatter={xFmt}
-              tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "IBM Plex Mono" }} axisLine={{ stroke: "rgba(255,255,255,.12)" }} tickLine={false} />
+              tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "IBM Plex Mono" }} axisLine={{ stroke: "rgba(140,140,155,.32)" }} tickLine={false} />
             <YAxis tickFormatter={(v) => `${v > 0 ? "+" : ""}${v}%`} domain={[-18, 24]}
               tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "IBM Plex Mono" }} axisLine={false} tickLine={false} />
-            <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(255,255,255,.2)", strokeDasharray: "3 3" }} />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(140,140,155,.45)", strokeDasharray: "3 3" }} />
             <Area dataKey="band" name="เส้นฐาน" fill="rgba(232,87,141,.09)" stroke="rgba(232,87,141,.28)"
               strokeDasharray="4 4" strokeWidth={1} isAnimationActive={false} activeDot={false} />
             <ReferenceLine y={0} stroke="rgba(232,87,141,.55)" strokeDasharray="2 5"
@@ -808,11 +836,11 @@ function GasChart({ data, status }) {
       <div style={{ height: 150, marginTop: 8 }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 6, right: 10, bottom: 0, left: -22 }}>
-            <CartesianGrid stroke="rgba(255,255,255,.05)" vertical={false} />
+            <CartesianGrid stroke="rgba(140,140,155,.18)" vertical={false} />
             <XAxis dataKey="x" type="number" domain={[0, 14]} ticks={xTicks} tickFormatter={xFmt}
-              tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "IBM Plex Mono" }} axisLine={{ stroke: "rgba(255,255,255,.12)" }} tickLine={false} />
+              tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "IBM Plex Mono" }} axisLine={{ stroke: "rgba(140,140,155,.32)" }} tickLine={false} />
             <YAxis domain={[0, max]} tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "IBM Plex Mono" }} axisLine={false} tickLine={false} />
-            <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(255,255,255,.2)" }} />
+            <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(140,140,155,.45)" }} />
             <ReferenceArea y1={10} y2={Math.min(50, max)} fill="rgba(242,179,61,.08)" stroke="rgba(242,179,61,.25)" strokeDasharray="3 3"
               label={{ value: "Early-Warning 10–50 ppm", position: "insideTopRight", fill: "#F7C863", fontSize: 9, fontFamily: "IBM Plex Mono" }} />
             <Area dataKey="ppm" name="ก๊าซ NDIR" stroke="#E8578D" strokeWidth={2}
@@ -1186,7 +1214,7 @@ Authorization: Bearer ****  ·  Content-Type: application/json
                   <span style={{ fontWeight: 600 }}>{k.k} <span className="pri-faint" style={{ fontWeight: 400 }}>· เป้า {k.target}</span></span>
                   <span className="pri-mono" style={{ color: "var(--ok)", fontWeight: 600 }}>{k.val}{k.unit}</span>
                 </div>
-                <div style={{ height: 6, borderRadius: 99, background: "rgba(255,255,255,.07)", overflow: "hidden" }}>
+                <div style={{ height: 6, borderRadius: 99, background: "rgba(140,140,155,.2)", overflow: "hidden" }}>
                   <div style={{ width: `${(k.val / k.max) * 100}%`, height: "100%", borderRadius: 99, background: "linear-gradient(90deg,var(--pink),var(--ok))" }} />
                 </div>
                 <div style={{ fontSize: 9.5, marginTop: 3 }} className="pri-faint">{k.t}</div>
@@ -1876,10 +1904,15 @@ export default function App() {
   const [view, setView] = useState("dash");
   const [selected, setSelected] = useState("CH-MED-01");
   const [toastMsg, setToastMsg] = useState(null);
+  const [theme, setTheme] = useState("light");
   const toast = (m) => { setToastMsg(m); setTimeout(() => setToastMsg(null), 2400); };
 
+  useEffect(() => {
+    document.body.style.background = theme === "light" ? "#F3F4F8" : "#141318";
+  }, [theme]);
+
   return (
-    <div className="pri-root">
+    <div className={`pri-root ${theme === "light" ? "light" : ""}`}>
       <style>{CSS}</style>
 
       <aside className="pri-side">
@@ -1909,9 +1942,15 @@ export default function App() {
             {TITLES[view][0]}
             <small>{TITLES[view][1]}</small>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end" }}>
-            <span className="pri-syncpill"><Activity size={12} /> Race to Zero · Synced · Uptime 99.4%</span>
-            <span className="pri-date">ศุกร์ 3 ก.ค. 2569 · 14:32 น. · R-410A GWP 2,088</span>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 12 }}>
+            <button className="pri-th" onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
+              title={theme === "light" ? "สลับเป็นโหมดมืด" : "สลับเป็นโหมดสว่าง"} aria-label="Toggle light/dark theme">
+              {theme === "light" ? <Moon size={15} /> : <Sun size={15} />}
+            </button>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end" }}>
+              <span className="pri-syncpill"><Activity size={12} /> Race to Zero · Synced · Uptime 99.4%</span>
+              <span className="pri-date">ศุกร์ 3 ก.ค. 2569 · 14:32 น. · R-410A GWP 2,088</span>
+            </div>
           </div>
         </div>
 
