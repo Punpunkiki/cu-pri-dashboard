@@ -275,6 +275,36 @@ const CSS = `
 .pri-acc-h:hover{background:var(--panel2)}
 .pri-acc-t{font-size:13px;font-weight:600;display:flex;align-items:center;gap:9px}
 
+/* ---------- rich menu tap simulator ---------- */
+button.pri-zone{background:none;border-top:none;border-left:none;cursor:pointer;font:inherit;color:inherit;text-align:center}
+button.pri-zone:hover .zic{transform:scale(1.07)}
+.pri-zone .zic{transition:transform .12s ease}
+.pri-zone.zsel{box-shadow:inset 0 0 0 2.5px var(--pink);background:rgba(232,87,141,.07)}
+.pri-zone.hero.zsel{box-shadow:inset 0 0 0 2.5px #fff}
+.pri-sim{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:start;margin-top:14px}
+@media(max-width:960px){.pri-sim{grid-template-columns:1fr;justify-items:center}}
+.pri-merow{display:flex;justify-content:flex-end;gap:6px;align-items:flex-end}
+.pri-me{background:#8DE055;color:#173015;border-radius:14px;border-top-right-radius:4px;padding:8px 12px;
+  font-size:11px;max-width:190px;box-shadow:0 1px 2px rgba(20,30,50,.12);line-height:1.5}
+.pri-webbar{background:#EDF1F7;border-bottom:1px solid #D8DFEC;display:flex;align-items:center;gap:8px;
+  padding:8px 12px;font-size:10px;color:#5B6B85;font-family:var(--mono)}
+.pri-webbar .url{flex:1;background:#fff;border:1px solid #DCE3EF;border-radius:99px;padding:4px 11px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pri-liff{flex:1;overflow:auto;background:#141318;color:var(--txt);padding:12px 11px;display:flex;
+  flex-direction:column;gap:8px;scrollbar-width:none}
+.pri-liff::-webkit-scrollbar{display:none}
+.pri-mkpi{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pri-mkpi>div{background:#1C1B23;border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:7px 9px}
+.pri-mkpi .v{font-family:var(--mono);font-size:14px;font-weight:600}
+.pri-mkpi .l{font-size:8.5px;color:#A6A0B1}
+.pri-mtile{display:flex;justify-content:space-between;align-items:center;background:#1C1B23;
+  border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:8px 10px;gap:8px}
+.pri-help{flex:1;overflow:auto;background:#FAFBFD;color:#28303F;padding:13px 12px;display:flex;
+  flex-direction:column;gap:9px;font-size:10.5px;scrollbar-width:none}
+.pri-help::-webkit-scrollbar{display:none}
+.pri-help h4{font-size:11.5px;margin:0 0 5px;color:#141318}
+.pri-help .hp{background:#fff;border:1px solid #E3E8F1;border-radius:10px;padding:9px 11px;line-height:1.65}
+
 /* ---------- toast ---------- */
 .pri-toast{position:fixed;bottom:22px;right:22px;background:#221F2B;border:1px solid rgba(232,87,141,.5);
   color:var(--txt);border-radius:12px;padding:11px 16px;font-size:12.5px;display:flex;gap:9px;align-items:center;
@@ -1400,7 +1430,291 @@ function Acc({ title, sub, json, toast, color }) {
   );
 }
 
+/* ---------------- rich menu tap simulator: what each zone does ---------------- */
+
+const ZONE_SIM = {
+  A: {
+    when: "LINE เปิดแดชบอร์ด Single Pane of Glass เป็น LIFF (เว็บวิวในแชท) — เห็น KPI Strip, ไฟจราจรทุกอาคาร และแตะการ์ดเข้า Drill-down ได้ทันที โดยไม่ต้องล็อกอินซ้ำ (ใช้ LINE Profile ผ่าน LIFF SDK)",
+    backend: "Action แบบ uri — ไม่สร้างข้อความในแชท · LIFF โหลด React app ตัวนี้จากโฮสต์ HTTPS พร้อม query ?view=dashboard",
+  },
+  B: {
+    when: "แชทแสดงข้อความของผู้ใช้ “ดูการแจ้งเตือนล่าสุด” (displayText) แล้วบอทตอบกลับรายการแจ้งเตือนที่ยังเปิดอยู่ 2 รายการ — 🔴 CH-MED-01 และ 🟡 CH-SCI-02 พร้อมปุ่มเปิด Drill-down",
+    backend: "Webhook รับ postback (data=menu=alerts) → ดึง Active Alerts จากคลาวด์ → Reply Message เป็น Flex ภายใน Reply Token (ไม่เสียโควตา Push)",
+  },
+  C: {
+    when: "บอทส่งการ์ดสรุปผู้บริหารฉบับล่าสุด (23–29 มิ.ย.) — COP +8.2% · ชั่วโมงฉุกเฉินที่เลี่ยงได้ · ฿ ที่ประหยัด · tCO2e — ใบเดียวกับที่ Broadcast อัตโนมัติทุกวันจันทร์ 08:00 น.",
+    backend: "postback (data=menu=weekly) → ดึงรายงานงวดล่าสุด → Reply ด้วย FLEX_WEEKLY (JSON ชุดเดียวกับใน D4)",
+  },
+  D: {
+    when: "บอทตอบสถานะครบทั้ง 8 เครื่อง / 6 อาคารในการ์ดเดียว — ไฟจราจรคู่ป้ายภาษาไทย พร้อมค่า NDIR / Confidence ของเครื่องที่ผิดปกติ และ COP ของเครื่องปกติ",
+    backend: "postback (data=menu=status) → query สถานะเรียลไทม์ทุก Asset จากคลาวด์ → Reply Flex รายการ + ปุ่มเปิดแดชบอร์ด (LIFF)",
+  },
+  E: {
+    when: "เปิดหน้าคู่มือ (เว็บวิว) — อธิบายความหมายไฟจราจร, เกณฑ์การตรวจจับ (Superheat +2–3 °C · NDIR 10–50 ppm · ยืนยันเมื่อต่อเนื่อง 12–24 ชม. · ไวถึง Micro-leak 1–5%) และวิธีรับเรื่อง/เปิด Work Order",
+    backend: "Action แบบ uri เปิดเพจ Help บนโฮสต์เดียวกับ LIFF — ทีมแก้เนื้อหาคู่มือได้ทุกเมื่อโดยไม่ต้องอัปโหลด Rich Menu ใหม่",
+  },
+  F: {
+    when: "LINE ส่งข้อความ “ติดต่อทีม” เข้าแชทแทนผู้ใช้ (oaMessage) แล้วบอทตอบการ์ดช่องทางติดต่อ — ศูนย์บริการวิชาการ (ผู้ประสานงานหลัก), สำนักบริหารระบบกายภาพ (เจ้าของพื้นที่), สายด่วนช่างเวร 24 ชม. พร้อมปุ่มโทร/อีเมล",
+    backend: "uri แบบ line.me/R/oaMessage prefill ข้อความ → Webhook จับคีย์เวิร์ด “ติดต่อทีม” → Reply การ์ดผู้ติดต่อ (ปุ่ม tel: และ mailto:)",
+  },
+};
+
+const MeMsg = ({ children, time }) => (
+  <div className="pri-merow">
+    <span className="pri-time">อ่านแล้ว<br />{time}</span>
+    <div className="pri-me">{children}</div>
+  </div>
+);
+
+const MINI_ASSETS = [
+  ["crit", "CH-MED-01", "คณะแพทยศาสตร์", "NDIR 36 ppm"],
+  ["warn", "CH-SCI-02", "คณะวิทยาศาสตร์", "Conf. 68/100"],
+  ["ok", "CH-MED-02", "คณะแพทยศาสตร์", "COP 5.3"],
+  ["ok", "CH-SCI-01", "คณะวิทยาศาสตร์", "COP 5.1"],
+  ["ok", "CH-ENG-01", "คณะวิศวกรรมศาสตร์", "COP 5.4"],
+  ["ok", "VRF-CJ9-01", "อาคารจามจุรี 9", "COP 4.9"],
+  ["ok", "CH-LIB-01", "หอสมุดกลาง", "COP 5.2"],
+  ["ok", "CH-MCS-01", "มหาจักรีสิรินธร", "COP 5.0"],
+];
+
+const LiffDashPreview = () => (
+  <div className="pri-liff">
+    <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+      <LogoMark size={20} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 10.5, fontWeight: 700 }}>Single Pane of Glass</div>
+        <div style={{ fontSize: 7.5, color: "var(--faint)", fontFamily: "var(--mono)" }}>ศุกร์ 3 ก.ค. 2569 · 14:32 น.</div>
+      </div>
+      <span style={{ fontSize: 7.5, fontFamily: "var(--mono)", color: "#7CE4BC", border: "1px solid rgba(47,191,143,.4)", borderRadius: 99, padding: "2px 7px", whiteSpace: "nowrap" }}>Race to Zero ✓</span>
+    </div>
+    <div className="pri-mkpi">
+      <div><div className="v">6<span style={{ fontSize: 9, color: "var(--faint)" }}>/8</span></div><div className="l">อาคารปกติ</div></div>
+      <div><div className="v">2</div><div className="l">การแจ้งเตือน</div></div>
+      <div><div className="v">42.8</div><div className="l">tCO2e ป้องกันได้</div></div>
+      <div><div className="v">฿186.4k</div><div className="l">Penalty ที่เลี่ยงได้</div></div>
+    </div>
+    {MINI_ASSETS.slice(0, 6).map(([s, id, b, stat]) => (
+      <div className="pri-mtile" key={id}>
+        <span style={{ display: "flex", gap: 7, alignItems: "center", minWidth: 0 }}>
+          <span className={`pri-dot ${s}`} style={{ background: ST[s].color }} />
+          <span style={{ minWidth: 0 }}>
+            <span className="pri-mono" style={{ fontSize: 9.5, fontWeight: 600, display: "block" }}>{id}</span>
+            <span style={{ fontSize: 8, color: "var(--mut)", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{b}</span>
+          </span>
+        </span>
+        <span style={{ textAlign: "right", flex: "none" }}>
+          <span style={{ fontSize: 8.5, fontWeight: 700, color: ST[s].color, display: "block" }}>{ST[s].label}</span>
+          <span className="pri-mono" style={{ fontSize: 7.5, color: "var(--faint)" }}>{stat}</span>
+        </span>
+      </div>
+    ))}
+    <div style={{ fontSize: 8, color: "var(--faint)", textAlign: "center" }}>แตะการ์ดเพื่อเปิด Failure Signature ของเครื่องนั้น</div>
+  </div>
+);
+
+const HelpPreview = () => (
+  <div className="pri-help">
+    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+      <LogoMark size={22} />
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 700, color: "#141318" }}>คู่มือใช้งาน CU-PRI</div>
+        <div style={{ fontSize: 8, color: "#8794AB", fontFamily: "var(--mono)" }}>cu-pri.example.chula.ac.th/help</div>
+      </div>
+    </div>
+    <div className="hp"><h4>🚦 ไฟจราจรหมายถึงอะไร</h4>
+      🟢 <b>ปกติ</b> — ทำงานตามเส้นฐาน ประหยัดพลังงาน<br />
+      🟡 <b>เฝ้าระวัง</b> — ประสิทธิภาพมีแนวโน้มลดลง / เสี่ยงรั่วระยะเริ่มต้น (Anomaly Predictive)<br />
+      🔴 <b>วิกฤต</b> — ยืนยันการรั่วจริง ต้องเข้าแก้ไขทันที (Critical Leak Detection)</div>
+    <div className="hp"><h4>📐 เกณฑ์การตรวจจับ</h4>
+      · Superheat สูงกว่าเส้นฐาน +2–3 °C<br />
+      · NDIR แจ้งเตือนล่วงหน้าที่ 10–50 ppm (ตรวจได้ละเอียดถึง ~1 ppm)<br />
+      · ยืนยัน Anomaly เมื่อเงื่อนไขต่อเนื่อง 12–24 ชม.<br />
+      · ไวต่อ Micro-leak ตั้งแต่สูญเสียมวลเพียง 1–5%</div>
+    <div className="hp"><h4>🛠️ การรับเรื่อง</h4>
+      แตะปุ่ม "รับเรื่อง" ในการ์ดแจ้งเตือน → Work Order เปิดอัตโนมัติ · ผลซ่อมถูกบันทึกเข้า Audit Log (ISO 14064-1)</div>
+    <div className="hp"><h4>☎️ ติดต่อ</h4>
+      ศูนย์บริการวิชาการ จุฬาฯ · ช่างเวรฉุกเฉิน 24 ชม. โทร 02-218-3000</div>
+  </div>
+);
+
+function SimChat({ z }) {
+  if (z === "B") return (
+    <>
+      <span className="pri-bc">วันนี้ · ผู้ใช้กดเมนู B</span>
+      <MeMsg time="14:32">ดูการแจ้งเตือนล่าสุด</MeMsg>
+      <OaMsg time="14:32">
+        <div className="pri-flexcard">
+          <div className="pri-fchead" style={{ background: "#141318" }}>
+            <div className="t">🔔 การแจ้งเตือนที่ใช้งานอยู่ (2)</div>
+            <div className="s">อัปเดต 14:32 น. · เรียงตามความรุนแรง</div>
+          </div>
+          <div className="pri-fcbody">
+            <div style={{ borderLeft: "3px solid #DC2626", paddingLeft: 8, fontSize: 10.5, lineHeight: 1.5 }}>
+              <b style={{ color: "#DC2626" }}>🔴 CH-MED-01 · คณะแพทยศาสตร์</b><br />
+              ยืนยันการรั่ว (ท่อทางดูด) · NDIR 36 ppm<br />
+              <span style={{ color: "#8A8A93", fontSize: 9.5 }}>WO-2569-0142 · กำลังดำเนินการ</span>
+            </div>
+            <div style={{ borderLeft: "3px solid #B45309", paddingLeft: 8, fontSize: 10.5, lineHeight: 1.5 }}>
+              <b style={{ color: "#B45309" }}>🟡 CH-SCI-02 · คณะวิทยาศาสตร์</b><br />
+              Micro-leak เฝ้าระวัง · Confidence 68/100<br />
+              <span style={{ color: "#8A8A93", fontSize: 9.5 }}>รอ Cross-validation จาก NDIR</span>
+            </div>
+          </div>
+          <div className="pri-fcfoot"><span className="pri-fcbtn" style={{ background: "#141318", color: "#fff" }}>เปิด Drill-down (LIFF)</span></div>
+        </div>
+      </OaMsg>
+    </>
+  );
+  if (z === "C") return (
+    <>
+      <span className="pri-bc">วันนี้ · ผู้ใช้กดเมนู C</span>
+      <MeMsg time="14:32">ขอรายงานสรุปรายสัปดาห์</MeMsg>
+      <OaMsg time="14:32">
+        <div className="pri-flexcard">
+          <div className="pri-fchead" style={{ background: "#E8578D" }}>
+            <div className="t">📊 สรุปผู้บริหารรายสัปดาห์</div>
+            <div className="s">งวดล่าสุด 23–29 มิ.ย. 2569 · 8 เครื่อง</div>
+          </div>
+          <div className="pri-fcbody" style={{ gap: 0 }}>
+            <div className="pri-fcstat"><span>ประสิทธิภาพ COP เฉลี่ย</span><span className="v" style={{ color: "#1B9E77" }}>+8.2%</span></div>
+            <div className="pri-fcstat"><span>ชม.ฉุกเฉินที่หลีกเลี่ยงได้</span><span className="v">14 ชม.</span></div>
+            <div className="pri-fcstat"><span>ประหยัดค่าไฟ + ค่าซ่อม</span><span className="v">฿186,400</span></div>
+            <div className="pri-fcstat"><span>ป้องกันการปล่อย</span><span className="v" style={{ color: "#1B9E77" }}>42.8 tCO2e</span></div>
+            <div style={{ fontSize: 9.5, color: "#8A8A93", paddingTop: 8 }}>ส่งอัตโนมัติทุกวันจันทร์ 08:00 น. — กดเมนูนี้เพื่อเรียกดูซ้ำได้ทุกเมื่อ</div>
+          </div>
+          <div className="pri-fcfoot"><span className="pri-fcbtn" style={{ background: "#E8578D", color: "#fff" }}>เปิดแดชบอร์ดผู้บริหาร</span></div>
+        </div>
+      </OaMsg>
+    </>
+  );
+  if (z === "D") return (
+    <>
+      <span className="pri-bc">วันนี้ · ผู้ใช้กดเมนู D</span>
+      <MeMsg time="14:32">ดูสถานะอาคารทั้งหมด</MeMsg>
+      <OaMsg time="14:32">
+        <div className="pri-flexcard">
+          <div className="pri-fchead" style={{ background: "#141318" }}>
+            <div className="t">🏢 สถานะอาคารนำร่อง</div>
+            <div className="s">8 เครื่อง · 6 อาคาร · อัปเดต 14:32 น.</div>
+          </div>
+          <div className="pri-fcbody" style={{ gap: 0 }}>
+            {MINI_ASSETS.map(([s, id, b, stat]) => (
+              <div className="pri-fcstat" key={id} style={{ fontSize: 10 }}>
+                <span>{s === "crit" ? "🔴" : s === "warn" ? "🟡" : "🟢"} <b className="pri-mono" style={{ fontSize: 9.5 }}>{id}</b> <span style={{ color: "#8A8A93" }}>{b}</span></span>
+                <span className="v" style={{ fontSize: 9.5, color: s === "crit" ? "#DC2626" : s === "warn" ? "#B45309" : "#1F1F26" }}>{stat}</span>
+              </div>
+            ))}
+          </div>
+          <div className="pri-fcfoot"><span className="pri-fcbtn" style={{ background: "#141318", color: "#fff" }}>เปิดแดชบอร์ด (LIFF)</span></div>
+        </div>
+      </OaMsg>
+    </>
+  );
+  /* F */
+  return (
+    <>
+      <span className="pri-bc">วันนี้ · ผู้ใช้กดเมนู F (oaMessage prefill)</span>
+      <MeMsg time="14:32">ติดต่อทีม</MeMsg>
+      <OaMsg time="14:32">
+        <div className="pri-flexcard">
+          <div className="pri-fchead" style={{ background: "#E8578D" }}>
+            <div className="t">☎️ ติดต่อทีม CU-PRI</div>
+            <div className="s">ผู้รับผิดชอบโครงการนำร่อง</div>
+          </div>
+          <div className="pri-fcbody">
+            <FcKv k="ประสานงานหลัก" v="ศูนย์บริการวิชาการ จุฬาฯ" />
+            <FcKv k="เจ้าของพื้นที่" v="สำนักบริหารระบบกายภาพ (อนุญาตเข้าอาคาร/ห้องเครื่อง)" />
+            <FcKv k="ฉุกเฉิน 24 ชม." v="ช่างเวรอาคาร โทร 02-218-3000" strong="#DC2626" />
+            <FcKv k="อีเมล" v="cu-pri@chula.ac.th (ตัวอย่าง)" />
+          </div>
+          <div className="pri-fcfoot">
+            <span className="pri-fcbtn" style={{ background: "#141318", color: "#fff" }}>📞 โทร 02-218-3000</span>
+            <span className="pri-fcbtn" style={{ background: "#EEF1F6", color: "#33415C" }}>✉️ ส่งอีเมลถึงทีม</span>
+          </div>
+        </div>
+      </OaMsg>
+    </>
+  );
+}
+
+function SimPhone({ z }) {
+  const webview = z === "A" || z === "E";
+  return (
+    <div className="pri-phone" style={{ width: 276 }} key={z}>
+      <div className="pri-screen" style={{ height: 566 }}>
+        <div className="pri-sbar"><span>14:32</span><span>▲▲ ⏻ 87%</span></div>
+        {webview ? (
+          <>
+            <div className="pri-lhead" style={{ padding: "7px 12px" }}>
+              <span className="pri-oaav" style={{ width: 22, height: 22 }}><LogoMark size={22} /></span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="nm" style={{ fontSize: 11 }}>{z === "A" ? "CU-PRI Dashboard (LIFF)" : "คู่มือใช้งาน CU-PRI"}</div>
+                <div className="sb">เว็บวิวในแชท · เปิดจาก Rich Menu โซน {z}</div>
+              </div>
+              <span style={{ opacity: 0.75, fontSize: 13 }}>✕</span>
+            </div>
+            <div className="pri-webbar">
+              <span>🔒</span>
+              <span className="url">{z === "A" ? "cu-pri-dashboard.vercel.app/?view=dashboard" : "cu-pri.example.chula.ac.th/help"}</span>
+              <span>⋯</span>
+            </div>
+            {z === "A" ? <LiffDashPreview /> : <HelpPreview />}
+          </>
+        ) : (
+          <>
+            <div className="pri-lhead">
+              <ChevronRight size={15} style={{ transform: "rotate(180deg)", opacity: 0.8 }} />
+              <span className="pri-oaav"><LogoMark size={26} /></span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="nm">CU-PRI · Refrigerant Intelligence</div>
+                <div className="sb">LINE Official Account · Messaging API</div>
+              </div>
+            </div>
+            <div className="pri-chat"><SimChat z={z} /></div>
+            <div className="pri-inbar"><span style={{ fontSize: 14 }}>＋</span><span className="fld">Aa</span><Send size={14} /></div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ZoneDetail({ z, toast }) {
+  const i = "ABCDEF".indexOf(z);
+  const zone = MENU_ZONES[i];
+  const sim = ZONE_SIM[z];
+  const action = RICH_MENU.areas[i].action;
+  const ZIcon = zone.Icon;
+  const str = JSON.stringify(action, null, 2);
+  return (
+    <div className="pri-card pri-fade" key={z} style={{ padding: "16px 18px", display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+        <span style={{ width: 44, height: 44, borderRadius: 13, background: zone.hero ? "linear-gradient(160deg,var(--pink),var(--pink-deep))" : "var(--panel2)", border: "1px solid rgba(232,87,141,.45)", display: "flex", alignItems: "center", justifyContent: "center", flex: "none", color: zone.hero ? "#fff" : "var(--pink-soft)" }}>
+          <ZIcon size={19} />
+        </span>
+        <div style={{ flex: 1, minWidth: 200 }}>
+          <div style={{ fontWeight: 700, fontSize: 15 }}>กดโซน {z} · {zone.t} <span className="pri-faint" style={{ fontWeight: 400, fontSize: 12 }}>{zone.en}</span></div>
+          <div style={{ display: "flex", gap: 6, marginTop: 5, flexWrap: "wrap" }}>
+            <span className="pri-chip" style={{ borderColor: "rgba(232,87,141,.45)", color: "var(--pink-soft)" }}>action: {action.type}</span>
+            <span className="pri-chip">พิกัด {zone.c} px</span>
+          </div>
+        </div>
+      </div>
+      <div className="pri-jbox"><div className="h">สิ่งที่ผู้ใช้เห็น (เมื่อกด)</div><span className="pri-mut" style={{ lineHeight: 1.65 }}>{sim.when}</span></div>
+      <div className="pri-jbox"><div className="h">เบื้องหลังระบบ (Backend)</div><span className="pri-mut" style={{ lineHeight: 1.65 }}>{sim.backend}</span></div>
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+          <span style={{ fontSize: 11, fontWeight: 600 }} className="pri-mut">Action JSON (ใน areas ของ Rich Menu)</span>
+          <CopyBtn text={str} toast={toast} label={`Action โซน ${z}`} />
+        </div>
+        <pre className="pri-code" style={{ maxHeight: 150 }}>{str}</pre>
+      </div>
+    </div>
+  );
+}
+
 function HandoffView({ toast }) {
+  const [zone, setZone] = useState("A");
   return (
     <div className="pri-fade" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
@@ -1446,21 +1760,23 @@ function HandoffView({ toast }) {
         <div className="pri-sec" style={{ marginBottom: 12 }}>D2 · Rich Menu — 2500 × 1686 px · 6 โซน</div>
         <div className="pri-two" style={{ gridTemplateColumns: "minmax(0,1.35fr) minmax(0,1fr)" }}>
           <div>
-            <div className="pri-menu" role="img" aria-label="ต้นแบบ Rich Menu 6 โซน">
+            <div className="pri-menu" role="group" aria-label="ต้นแบบ Rich Menu 6 โซน — แตะโซนเพื่อดูผลลัพธ์จำลอง">
               {MENU_ZONES.map((z) => {
                 const ZIcon = z.Icon;
                 return (
-                  <div key={z.z} className={`pri-zone ${z.hero ? "hero" : ""}`}>
+                  <button key={z.z} onClick={() => setZone(z.z)} aria-pressed={zone === z.z}
+                    className={`pri-zone ${z.hero ? "hero" : ""} ${zone === z.z ? "zsel" : ""}`}>
                     <span className="zl">{z.z}</span>
                     <span className="zic"><ZIcon size={20} /></span>
                     <span className="zt">{z.t}</span>
                     <span className="zs">{z.en}</span>
-                  </div>
+                  </button>
                 );
               })}
             </div>
             <div style={{ fontSize: 10.5, marginTop: 8 }} className="pri-faint">
-              ต้นแบบนี้ส่งออกเป็น SVG ได้ แต่ต้อง <b className="pri-mut">Flatten เป็น PNG หรือ JPEG (≤ 1 MB)</b> ก่อนอัปโหลดเข้า LINE ·
+              👆 <b className="pri-mut">แตะโซน A–F เพื่อจำลองผลลัพธ์ด้านล่าง</b> · ต้นแบบนี้ส่งออกเป็น SVG ได้ แต่ต้อง
+              <b className="pri-mut"> Flatten เป็น PNG หรือ JPEG (≤ 1 MB)</b> ก่อนอัปโหลดเข้า LINE ·
               โซน A ลิงก์เข้าแดชบอร์ด (LIFF) จึงใช้สีชมพูเป็นปุ่มหลัก
             </div>
           </div>
@@ -1485,6 +1801,18 @@ function HandoffView({ toast }) {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div className="pri-sec" style={{ margin: "18px 0 0" }}>D2.1 · Tap Simulator — กดแต่ละโซนแล้วเห็นอะไร</div>
+        <div className="pri-sim">
+          <ZoneDetail z={zone} toast={toast} />
+          <div>
+            <SimPhone z={zone} />
+            <div className="pri-phlabel">
+              <b>ผลลัพธ์เมื่อกดโซน {zone} · {MENU_ZONES["ABCDEF".indexOf(zone)].t}</b>
+              {ZONE_SIM[zone] && (zone === "A" || zone === "E" ? "เปิดเป็นเว็บวิว (uri) — ไม่มีข้อความในแชท" : "บอทตอบกลับในแชท (postback / oaMessage)")}
+            </div>
           </div>
         </div>
       </section>
