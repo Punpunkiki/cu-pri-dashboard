@@ -1865,17 +1865,11 @@ function HandoffView({ toast }) {
 const NAV = [
   { k: "dash", t: "แดชบอร์ด", s: "Single Pane of Glass", Icon: LayoutDashboard },
   { k: "export", t: "Export & Audit", s: "Race to Zero · ISO 14064-1", Icon: Database },
-  { k: "journeys", t: "User Journeys", s: "3 บทบาทผู้ใช้", Icon: Users },
-  { k: "line", t: "LINE Mockups", s: "Messaging API", Icon: MessageSquare },
-  { k: "handoff", t: "Handoff Pack", s: "LINE OA Build Kit", Icon: Package },
 ];
 
 const TITLES = {
   dash: ["แดชบอร์ด — Single Pane of Glass", "สุขภาพระบบปรับอากาศทุกอาคารนำร่องในหน้าจอเดียว · Traffic Light + Drill-down"],
   export: ["Export Module — Race to Zero & ISO 14064-1", "Audit Log · การแปลงมวลเป็นคาร์บอน (kg × GWP) · สถานะ API Sync"],
-  journeys: ["User Journey — 3 บทบาทผู้ใช้", "ช่างเทคนิค · ผู้บริหารสำนักบริหารระบบกายภาพ · Sustainability Admin"],
-  line: ["LINE Message Mockups", "Push แจ้งช่าง · Broadcast สรุปผู้บริหาร · Escalation วิกฤต — บน Messaging API"],
-  handoff: ["LINE OA Handoff Pack", "Brand Sheet · Rich Menu 2500×1686 · Greeting · Flex Message JSON"],
 };
 
 export default function App() {
@@ -1923,9 +1917,6 @@ export default function App() {
 
         {view === "dash" && <DashboardView selected={selected} setSelected={setSelected} />}
         {view === "export" && <ExportView toast={toast} />}
-        {view === "journeys" && <JourneysView />}
-        {view === "line" && <LineView />}
-        {view === "handoff" && <HandoffView toast={toast} />}
       </main>
 
       {toastMsg && <div className="pri-toast"><CheckCircle2 size={15} color="var(--ok)" /> {toastMsg}</div>}
