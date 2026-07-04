@@ -19,8 +19,8 @@ import {
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-@font-face{font-family:'Cloud Soft';src:url('/fonts/CloudSoft-Light.ttf') format('truetype');font-weight:300 500;font-style:normal;font-display:swap}
-@font-face{font-family:'Cloud Soft';src:url('/fonts/CloudSoft-Bold.ttf') format('truetype');font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Cloud Soft';src:url('/fonts/CloudSoft-Light.ttf') format('truetype');font-weight:100 350;font-style:normal;font-display:swap}
+@font-face{font-family:'Cloud Soft';src:url('/fonts/CloudSoft-Bold.ttf') format('truetype');font-weight:351 900;font-style:normal;font-display:swap}
 
 .pri-root{
   --pink:#E8578D; --pink-soft:#F7B8D0; --pink-deep:#C2376E;
@@ -28,7 +28,7 @@ const CSS = `
   --txt:#F3F0F6; --mut:#A6A0B1; --faint:#6F687C;
   --ok:#2FBF8F; --warn:#F2B33D; --crit:#FF5147;
   --blue:#5EB3FF; --violet:#B88CFF; --orange:#FF8A5C;
-  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --mono:'Cloud Soft','IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   font-family:'Cloud Soft','IBM Plex Sans Thai','Noto Sans Thai',-apple-system,'Segoe UI',sans-serif;
   background:var(--bg); color:var(--txt); min-height:100vh; display:flex;
   -webkit-font-smoothing:antialiased; line-height:1.5;
@@ -808,17 +808,17 @@ function FailureSignatureChart({ data, status }) {
           <ComposedChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: -14 }}>
             <CartesianGrid stroke="rgba(140,140,155,.18)" vertical={false} />
             <XAxis dataKey="x" type="number" domain={[0, 14]} ticks={xTicks} tickFormatter={xFmt}
-              tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "IBM Plex Mono" }} axisLine={{ stroke: "rgba(140,140,155,.32)" }} tickLine={false} />
+              tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "Cloud Soft" }} axisLine={{ stroke: "rgba(140,140,155,.32)" }} tickLine={false} />
             <YAxis tickFormatter={(v) => `${v > 0 ? "+" : ""}${v}%`} domain={[-18, 24]}
-              tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "IBM Plex Mono" }} axisLine={false} tickLine={false} />
+              tick={{ fill: "#6F687C", fontSize: 10, fontFamily: "Cloud Soft" }} axisLine={false} tickLine={false} />
             <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(140,140,155,.45)", strokeDasharray: "3 3" }} />
             <Area dataKey="band" name="เส้นฐาน" fill="rgba(232,87,141,.09)" stroke="rgba(232,87,141,.28)"
               strokeDasharray="4 4" strokeWidth={1} isAnimationActive={false} activeDot={false} />
             <ReferenceLine y={0} stroke="rgba(232,87,141,.55)" strokeDasharray="2 5"
-              label={{ value: "Dynamic Baseline", position: "insideTopLeft", fill: "#E8578D", fontSize: 9.5, fontFamily: "IBM Plex Mono", dy: -4 }} />
+              label={{ value: "Dynamic Baseline", position: "insideTopLeft", fill: "#E8578D", fontSize: 9.5, fontFamily: "Cloud Soft", dy: -4 }} />
             {status === "crit" && (
               <ReferenceArea x1={11.4} x2={14} fill="rgba(255,81,71,.07)" stroke="rgba(255,81,71,.25)" strokeDasharray="3 3"
-                label={{ value: "ยืนยันการรั่ว", position: "insideTop", fill: "#FF8B84", fontSize: 9.5, fontFamily: "IBM Plex Mono" }} />
+                label={{ value: "ยืนยันการรั่ว", position: "insideTop", fill: "#FF8B84", fontSize: 9.5, fontFamily: "Cloud Soft" }} />
             )}
             <Line dataKey="suction" name="แรงดันดูด" stroke="#5EB3FF" strokeWidth={2.2} dot={false} isAnimationActive={false} />
             <Line dataKey="runtime" name="Runtime" stroke="#B88CFF" strokeWidth={1.8} dot={false} isAnimationActive={false} />
@@ -843,11 +843,11 @@ function GasChart({ data, status }) {
           <AreaChart data={data} margin={{ top: 6, right: 10, bottom: 0, left: -22 }}>
             <CartesianGrid stroke="rgba(140,140,155,.18)" vertical={false} />
             <XAxis dataKey="x" type="number" domain={[0, 14]} ticks={xTicks} tickFormatter={xFmt}
-              tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "IBM Plex Mono" }} axisLine={{ stroke: "rgba(140,140,155,.32)" }} tickLine={false} />
-            <YAxis domain={[0, max]} tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "IBM Plex Mono" }} axisLine={false} tickLine={false} />
+              tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "Cloud Soft" }} axisLine={{ stroke: "rgba(140,140,155,.32)" }} tickLine={false} />
+            <YAxis domain={[0, max]} tick={{ fill: "#6F687C", fontSize: 9.5, fontFamily: "Cloud Soft" }} axisLine={false} tickLine={false} />
             <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(140,140,155,.45)" }} />
             <ReferenceArea y1={10} y2={Math.min(50, max)} fill="rgba(242,179,61,.08)" stroke="rgba(242,179,61,.25)" strokeDasharray="3 3"
-              label={{ value: "Early-Warning 10–50 ppm", position: "insideTopRight", fill: "#F7C863", fontSize: 9, fontFamily: "IBM Plex Mono" }} />
+              label={{ value: "Early-Warning 10–50 ppm", position: "insideTopRight", fill: "#F7C863", fontSize: 9, fontFamily: "Cloud Soft" }} />
             <Area dataKey="ppm" name="ก๊าซ NDIR" stroke="#E8578D" strokeWidth={2}
               fill="rgba(232,87,141,.14)" dot={false} isAnimationActive={false} />
           </AreaChart>
