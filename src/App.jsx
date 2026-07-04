@@ -19,6 +19,8 @@ import {
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@font-face{font-family:'Cloud Soft';src:url('/fonts/CloudSoft-Light.ttf') format('truetype');font-weight:300 500;font-style:normal;font-display:swap}
+@font-face{font-family:'Cloud Soft';src:url('/fonts/CloudSoft-Bold.ttf') format('truetype');font-weight:600 900;font-style:normal;font-display:swap}
 
 .pri-root{
   --pink:#E8578D; --pink-soft:#F7B8D0; --pink-deep:#C2376E;
@@ -27,7 +29,7 @@ const CSS = `
   --ok:#2FBF8F; --warn:#F2B33D; --crit:#FF5147;
   --blue:#5EB3FF; --violet:#B88CFF; --orange:#FF8A5C;
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-family:'IBM Plex Sans Thai','Noto Sans Thai',-apple-system,'Segoe UI',sans-serif;
+  font-family:'Cloud Soft','IBM Plex Sans Thai','Noto Sans Thai',-apple-system,'Segoe UI',sans-serif;
   background:var(--bg); color:var(--txt); min-height:100vh; display:flex;
   -webkit-font-smoothing:antialiased; line-height:1.5;
 }
@@ -64,7 +66,7 @@ const CSS = `
 .pri-date{font-size:11.5px;color:var(--faint);font-family:var(--mono);text-align:right}
 
 /* ---------- primitives ---------- */
-.pri-card{background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.pri-card{background:var(--panel);border:1px solid var(--line);border-radius:17px}
 .pri-sec{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);
   font-weight:600;font-family:var(--mono);display:flex;align-items:center;gap:8px}
 .pri-sec::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(232,87,141,.4),transparent)}
@@ -327,22 +329,25 @@ button.pri-zone:hover .zic{transform:scale(1.07)}
   border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--mut);cursor:pointer}
 .pri-th:hover{color:var(--txt);border-color:var(--pink)}
 
-/* ---------- LIGHT THEME ---------- */
+/* ---------- LIGHT THEME · pink-cute (default) ---------- */
 .pri-root.light{
-  --bg:#F3F4F8; --panel:#FFFFFF; --panel2:#F1F2F6; --line:rgba(20,19,32,.11);
-  --txt:#1A1A22; --mut:#5C5768; --faint:#8B8695;
+  --bg:#FBE4EE; --panel:#FFFFFF; --panel2:#FDEFF5; --line:rgba(180,80,120,.16);
+  --txt:#4B3A34; --mut:#9A7B84; --faint:#BBA3AB;
 }
-.pri-root.light .pri-side{background:#FAFAFC}
-.pri-root.light .pri-nav:hover{background:rgba(20,19,32,.05)}
-.pri-root.light .pri-nav.on{background:linear-gradient(90deg,rgba(232,87,141,.12),rgba(232,87,141,.02))}
-.pri-root.light .pri-btn:hover{border-color:rgba(20,19,32,.22)}
-.pri-root.light .pri-tile:hover{border-color:rgba(20,19,32,.22)}
-.pri-root.light .pri-copy:hover{border-color:rgba(20,19,32,.25)}
-.pri-root.light .pri-list{scrollbar-color:#C7C7D2 transparent}
-.pri-root.light .pri-list::-webkit-scrollbar-thumb{background:#C9C9D3}
-.pri-root.light .pri-tip{background:#FFFFFF;box-shadow:0 12px 30px rgba(20,19,32,.15)}
-.pri-root.light .pri-toast{background:#FFFFFF;box-shadow:0 16px 40px rgba(20,19,32,.18)}
-.pri-root.light .pri-table td{border-bottom-color:rgba(20,19,32,.08)}
+.pri-root.light .pri-side{background:#FFF6FB;border-right-color:var(--line)}
+.pri-root.light .pri-h1,.pri-root.light .pri-logo-t{color:#6E4636}
+.pri-root.light .pri-card{box-shadow:0 3px 14px rgba(184,84,126,.08)}
+.pri-root.light .pri-nav:hover{background:rgba(232,87,141,.08)}
+.pri-root.light .pri-nav.on{background:linear-gradient(90deg,rgba(232,87,141,.16),rgba(232,87,141,.03));border-color:rgba(232,87,141,.4)}
+.pri-root.light .pri-btn{border-radius:99px}
+.pri-root.light .pri-btn:hover{border-color:rgba(180,80,120,.32)}
+.pri-root.light .pri-tile:hover{border-color:rgba(232,87,141,.42)}
+.pri-root.light .pri-copy:hover{border-color:rgba(180,80,120,.32)}
+.pri-root.light .pri-list{scrollbar-color:#EBBBD0 transparent}
+.pri-root.light .pri-list::-webkit-scrollbar-thumb{background:#EBBBD0}
+.pri-root.light .pri-tip{background:#FFFFFF;box-shadow:0 12px 30px rgba(120,40,80,.16)}
+.pri-root.light .pri-toast{background:#FFFFFF;box-shadow:0 16px 40px rgba(120,40,80,.18)}
+.pri-root.light .pri-table td{border-bottom-color:rgba(180,80,120,.1)}
 .pri-root.light .pri-syncpill{color:#0C8A62;border-color:rgba(47,159,120,.4);background:rgba(47,191,143,.13)}
 .pri-root.light .st-ok{color:#0C8A62}
 .pri-root.light .st-warn{color:#946200}
@@ -1908,7 +1913,7 @@ export default function App() {
   const toast = (m) => { setToastMsg(m); setTimeout(() => setToastMsg(null), 2400); };
 
   useEffect(() => {
-    document.body.style.background = theme === "light" ? "#F3F4F8" : "#141318";
+    document.body.style.background = theme === "light" ? "#FBE4EE" : "#141318";
   }, [theme]);
 
   return (
